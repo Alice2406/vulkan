@@ -168,10 +168,20 @@
             "c:\\vulkansdk\\1.4.357.0\\include\\vulkan\\vulkan_handles.hpp",
             "c:\\vulkansdk\\1.4.357.0\\include\\vulkan\\vulkan_structs.hpp",
             "c:\\vulkansdk\\1.4.357.0\\include\\vulkan\\vulkan_funcs.hpp",
+            "c:\\program files\\microsoft visual studio\\18\\community\\vc\\tools\\msvc\\14.51.36231\\include\\iostream",
+            "c:\\program files\\microsoft visual studio\\18\\community\\vc\\tools\\msvc\\14.51.36231\\include\\istream",
+            "c:\\program files\\microsoft visual studio\\18\\community\\vc\\tools\\msvc\\14.51.36231\\include\\__msvc_ostream.hpp",
+            "c:\\program files\\microsoft visual studio\\18\\community\\vc\\tools\\msvc\\14.51.36231\\include\\ios",
+            "c:\\program files\\microsoft visual studio\\18\\community\\vc\\tools\\msvc\\14.51.36231\\include\\ostream",
+            "c:\\program files\\microsoft visual studio\\18\\community\\vc\\tools\\msvc\\14.51.36231\\include\\__msvc_filebuf.hpp",
             "c:\\users\\aniezgodzki\\source\\repos\\vulkantuto\\include\\glfw\\glfw3.h",
             "c:\\program files (x86)\\windows kits\\10\\include\\10.0.28000.0\\um\\gl\\gl.h",
             "c:\\program files (x86)\\windows kits\\10\\include\\10.0.28000.0\\shared\\winapifamily.h",
-            "c:\\program files (x86)\\windows kits\\10\\include\\10.0.28000.0\\shared\\winpackagefamily.h"
+            "c:\\program files (x86)\\windows kits\\10\\include\\10.0.28000.0\\shared\\winpackagefamily.h",
+            "c:\\users\\aniezgodzki\\source\\repos\\vulkantuto\\vulkantuto\\debug.h",
+            "c:\\program files\\microsoft visual studio\\18\\community\\vc\\tools\\msvc\\14.51.36231\\include\\map",
+            "c:\\program files\\microsoft visual studio\\18\\community\\vc\\tools\\msvc\\14.51.36231\\include\\xtree",
+            "c:\\program files\\microsoft visual studio\\18\\community\\vc\\tools\\msvc\\14.51.36231\\include\\xnode_handle.h"
         ],
         "ImportedModules": [],
         "ImportedHeaderUnits": []

@@ -1,4 +1,5 @@
 ﻿  Application.cpp
+  Debug.cpp
   Renderer.cpp
   VulkanTuto.cpp
   Génération de code en cours...
