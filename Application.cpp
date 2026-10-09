@@ -1,0 +1,47 @@
+#include "Application.h"
+
+void Application::Init()
+{
+    InitWindow();
+    InitVulkan();
+}
+
+void Application::Run()
+{
+    while (!glfwWindowShouldClose(window))
+    {
+        glfwPollEvents();
+    }
+}
+
+void Application::Destroy()
+{
+    
+    DestroyWindow();
+    DestroyVulkan();
+}
+
+void Application::InitWindow()
+{
+    glfwInit();
+
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+
+    GLFWwindow* window = glfwCreateWindow(800, 600, "hello", nullptr, nullptr);
+}
+
+void Application::InitVulkan()
+{
+}
+
+void Application::DestroyWindow()
+{
+    glfwDestroyWindow(window);
+
+    glfwTerminate();
+}
+
+void Application::DestroyVulkan()
+{
+}
