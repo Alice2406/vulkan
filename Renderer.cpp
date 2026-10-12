@@ -100,7 +100,7 @@ void Renderer::SetupDebugCallback()
 
 bool Renderer::isDeviceSuitable(vk::raii::PhysicalDevice const& physicalDevice)
 {
-	bool supportsVulkan1_4 = physicalDevice.getProperties().apiVersion >= vk::ApiVersion13;
+	bool supportsVulkan1_3 = physicalDevice.getProperties().apiVersion >= vk::ApiVersion13;
 
 	auto queueFamilies = physicalDevice.getQueueFamilyProperties();
 	bool supportsGraphics = std::ranges::any_of(queueFamilies, [](auto const& qfp) { return !!(qfp.queueFlags & vk::QueueFlagBits::eGraphics); });
@@ -123,7 +123,7 @@ bool Renderer::isDeviceSuitable(vk::raii::PhysicalDevice const& physicalDevice)
 		features.template get<vk::PhysicalDeviceVulkan13Features>().dynamicRendering &&
 		features.template get<vk::PhysicalDeviceExtendedDynamicStateFeaturesEXT>().extendedDynamicState;
 
-	return supportsVulkan1_4 && supportsGraphics && supportsAllRequiredExtensions && supportsRequiredFeatures;
+	return supportsVulkan1_3 && supportsGraphics && supportsAllRequiredExtensions && supportsRequiredFeatures;
 }
 
 void Renderer::pickPhysicalDevice()
@@ -140,6 +140,63 @@ void Renderer::pickPhysicalDevice()
 	physicalDevice = *bestDevice;
 }
 
+void Renderer::createLogicalDevice()
+{
+    auto queueFamilyProperties = physicalDevice.getQueueFamilyProperties();
+
+    auto graphicsQueueFamilyProperty =
+        std::ranges::find_if(
+            queueFamilyProperties,
+            [](auto const& qfp)
+            {
+                return (qfp.queueFlags & vk::QueueFlagBits::eGraphics) !=
+                       static_cast<vk::QueueFlags>(0);
+            }
+        );
+
+    if (graphicsQueueFamilyProperty == queueFamilyProperties.end())
+        throw std::runtime_error("Failed to find a graphics queue family!");
+
+    auto graphicsQueueFamilyIndex =
+        static_cast<uint32_t>(
+            std::distance(
+                queueFamilyProperties.begin(),
+                graphicsQueueFamilyProperty
+            )
+        );
+
+    float queuePriority = 1.0f;
+    vk::DeviceQueueCreateInfo queueCreateInfo
+    {
+        .queueFamilyIndex = graphicsQueueFamilyIndex,
+        .queueCount = 1,
+        .pQueuePriorities = &queuePriority
+    };
+
+    vk::StructureChain<
+        vk::PhysicalDeviceFeatures2,
+        vk::PhysicalDeviceVulkan11Features,
+        vk::PhysicalDeviceVulkan13Features,
+        vk::PhysicalDeviceExtendedDynamicStateFeaturesEXT
+    > featureChain = {
+        {},
+        {.shaderDrawParameters = true},
+        {.dynamicRendering = true},
+        {.extendedDynamicState = true}
+    };
+
+    vk::DeviceCreateInfo deviceCreateInfo
+    {
+        .pNext = &featureChain.get<vk::PhysicalDeviceFeatures2>(),
+        .queueCreateInfoCount = 1,
+        .pQueueCreateInfos = &queueCreateInfo,
+        .enabledExtensionCount =
+            static_cast<uint32_t>(requiredDeviceExtension.size()),
+        .ppEnabledExtensionNames = requiredDeviceExtension.data()
+    };
+    device = vk::raii::Device(physicalDevice, deviceCreateInfo);
+    graphicsQueue = device.getQueue(graphicsQueueFamilyIndex, 0);
+}
 
 VKAPI_ATTR vk::Bool32 Renderer::DebugCallBack(vk::DebugUtilsMessageSeverityFlagBitsEXT severity, vk::DebugUtilsMessageTypeFlagsEXT type, const vk::DebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData)
 {
